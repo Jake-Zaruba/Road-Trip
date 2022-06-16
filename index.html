@@ -9,14 +9,32 @@
   </head>
   <body>
     <div id="app">
-      <input type="text" v-model="make" />
-      <input type="text" v-model="model" />
-      <input type="text" v-model="year" />
-      <input type="text" v-model="transmission" />
+      <input type="text" v-model="year" placeholder="Year" />
+      <input type="text" v-model="make" placeholder="Make" />
+      <input type="text" v-model="model" placeholder="Model" />
+      <select v-model="transmission">
+        <option value="a">Automatic</option>
+        <option value="m">Manual</option>
+      </select>
       <button @click="getMPG()"></button>
-      <input type="text" v-model="location" />
-      <input type="text" v-model="destination" />
-      <button @click="getDistance()"></button>
+      <input type="text" v-model="userMPG" />
+      <input type="text" v-model="userAddress" placeholder="Full address" />
+      <button @click="getUserLocation()"></button>
+      <input type="text" v-model="userLocation" />
+      <input
+        type="text"
+        v-model="destination"
+        placeholder="Enter destination"
+      />
+      <button @click="getDestination()"></button>
+      <input type="text" v-model="destinationCoords" />
+      <button @click="calculateDistance()"></button>
+      <input type="text" v-model="distance" />
+      <button @click="calculateCost()"></button>
+      <input type="text" v-model="gasPrice" />
+      <input type="text" v-model="totalCost" />
+
+      <!-- <button @click="getDistance()"></button> -->
     </div>
   </body>
   <script src="/main.js"></script>
