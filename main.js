@@ -1,5 +1,48 @@
 "use strict";
 
+let carMake = [
+  `Toyota`,
+  `Honda`,
+  `Chevrolet`,
+  `Ford`,
+  `Mercedes-Benz`,
+  `Jeep`,
+  `BMW`,
+  `Porsche`,
+  `Subaru`,
+  `Nissan`,
+  `Cadillac`,
+  `Volkswagen`,
+  `Lexus`,
+  `Audi`,
+  `Ferrari`,
+  `Volvo`,
+  `Jaguar`,
+  `GMC`,
+  `Buick`,
+  `Acura`,
+  `Bentley`,
+  `Dodge`,
+  `Hyundai`,
+  `Lincoln`,
+  `Mazda`,
+  `Land Rover`,
+  `Ram`,
+  `Kia`,
+  `Chrysler`,
+  `Pontiac`,
+  `Infiniti`,
+  `Mitsubishi`,
+  `Oldsmobile`,
+  `Maserati`,
+  `Aston Martin`,
+  `Suzuki`,
+];
+
+let sortedCarMake = carMake.sort();
+
+let searchMake = document.getElementById(`make`);
+
 const app = Vue.createApp({
   data() {
     return {
@@ -10,16 +53,36 @@ const app = Vue.createApp({
       userMPG: ``,
       userAddress: ``,
       userLocation: ``,
-      destination: ``,
-      destinationCoords: ``,
-      distance: ``,
       userState: ``,
+      destination: ``,
       destinationCity: ``,
+      destinationCoords: ``,
+      distance: `0`,
       gasPrice: ``,
-      totalCost: ``,
+      totalCost: `Round trip cost`,
+      // add option for a one way trip //
     };
   },
   methods: {
+    getMake() {
+      for (let i of sortedCarMake) {
+        if (
+          i.toLowerCase().startsWith(searchMake.value.toLowerCase()) &&
+          searchMake.value != ``
+        ) {
+          let listItem = document.createElement(`li`);
+          listItem.classList.add(`list-items`);
+          listItem.setAttribute(`onclick`, `displayNames('` + i + `'`);
+          let result = `<b>` + i.substr(0, searchMake.value.length) + `</b>`;
+          result += i.substr(searchMake.value.length);
+          listItem.innerHTML = result;
+          document.querySelector(`.list`).appendChild(listItem);
+        }
+      }
+      function displayNames(value) {
+        searchMake.value = value;
+      }
+    },
     getMPG() {
       let mpg = fetch(
         `https://api.api-ninjas.com/v1/cars?limit=30&year=` +
@@ -87,14 +150,19 @@ const app = Vue.createApp({
           let lat = data.results[0].locations[0].displayLatLng.lat;
           let lng = data.results[0].locations[0].displayLatLng.lng;
           this.destinationCoords = `${lat},${lng}`;
+          console.log(data);
         })
         .catch((error) => {
           console.log(`Error:`, error);
         });
     },
     calculateDistance() {
+      // fetch starting address //
+
+      const address = this.userAddress.replaceAll(` `, `+`);
       fetch(
-        `http://www.mapquestapi.com/directions/v2/route?key=VWtLJjUxEFuyRfoQSeoWjGBFJHVhossb&from=${this.userLocation}&to=${this.destinationCoords}`,
+        `http://www.mapquestapi.com/geocoding/v1/address?key=VWtLJjUxEFuyRfoQSeoWjGBFJHVhossb
+        &location=${address}`,
         {
           method: "GET",
           contentType: "application/json",
@@ -102,11 +170,44 @@ const app = Vue.createApp({
       )
         .then((response) => response.json())
         .then((data) => {
-          // console.log(data.route.distance);
-          this.distance = data.route.distance;
-        })
-        .catch((error) => {
-          console.log(`Error:`, error);
+          console.log(data);
+          this.userState = data.results[0].locations[0].adminArea3;
+          let lat = data.results[0].locations[0].displayLatLng.lat;
+          let lng = data.results[0].locations[0].displayLatLng.lng;
+          this.userLocation = `${lat},${lng}`;
+
+          // fetch destination address //
+
+          const destination = this.destination.replaceAll(` `, `+`);
+          fetch(
+            `http://www.mapquestapi.com/geocoding/v1/address?key=VWtLJjUxEFuyRfoQSeoWjGBFJHVhossb
+            &location=${destination}`,
+            {
+              method: "GET",
+              contentType: "application/json",
+            }
+          )
+            .then((response) => response.json())
+            .then((data) => {
+              this.destinationCity = data.results[0].locations[0].adminArea3;
+              let lat = data.results[0].locations[0].displayLatLng.lat;
+              let lng = data.results[0].locations[0].displayLatLng.lng;
+              this.destinationCoords = `${lat},${lng}`;
+
+              // calculate distance between user's location and destination //
+
+              fetch(
+                `http://www.mapquestapi.com/directions/v2/route?key=VWtLJjUxEFuyRfoQSeoWjGBFJHVhossb&from=${this.userLocation}&to=${this.destinationCoords}`,
+                {
+                  method: "GET",
+                  contentType: "application/json",
+                }
+              )
+                .then((response) => response.json())
+                .then((data) => {
+                  this.distance = data.route.distance.toFixed(1);
+                });
+            });
         });
     },
     calculateCost() {
@@ -124,7 +225,9 @@ const app = Vue.createApp({
         .then((response) => response.json())
         .then((data) => {
           this.gasPrice = data.result.state.gasoline;
-          this.totalCost = (this.distance / this.userMPG) * (this.gasPrice * 2);
+          // trim decimals //
+          let finalCost = (this.distance / this.userMPG) * (this.gasPrice * 2);
+          this.totalCost = `$` + finalCost.toFixed(2);
         })
         .catch((error) => {
           console.log(`Error:`, error);

@@ -4,37 +4,82 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/style.css" />
     <script src="https://unpkg.com/vue@3"></script>
     <title>Document</title>
   </head>
   <body>
     <div id="app">
-      <input type="text" v-model="year" placeholder="Year" />
-      <input type="text" v-model="make" placeholder="Make" />
-      <input type="text" v-model="model" placeholder="Model" />
-      <select v-model="transmission">
-        <option value="a">Automatic</option>
-        <option value="m">Manual</option>
-      </select>
-      <button @click="getMPG()"></button>
-      <h2>
-      <input type="text" v-model="userAddress" placeholder="Full address" />
-      <button @click="getUserLocation()"></button>
-      <input type="text" v-model="userLocation" />
-      <input
-        type="text"
-        v-model="destination"
-        placeholder="Enter destination"
-      />
-      <button @click="getDestination()"></button>
-      <input type="text" v-model="destinationCoords" />
-      <button @click="calculateDistance()"></button>
-      <input type="text" v-model="distance" />
-      <button @click="calculateCost()"></button>
-      <input type="text" v-model="gasPrice" />
-      <input type="text" v-model="totalCost" />
+      <div id="top-shape"></div>
+      <section class="section-location">
+        <label for="userAddress">Address</label>
+        <input
+          class="input-location location-user"
+          type="text"
+          name="userAdress"
+          v-model="userAddress"
+          placeholder="Full address"
+        />
+        <label for="destination">Destination</label>
+        <input
+          class="input-location location-destination"
+          type="text"
+          name="destination"
+          v-model="destination"
+          placeholder="Enter destination"
+        />
+      </section>
+      <section class="section-calculate">
+        <button @click="calculateDistance()">Calculate</button>
+        <div class="distance">{{ distance }}<span class="miles"> mi</span></div>
+      </section>
 
-      <!-- <button @click="getDistance()"></button> -->
+      <section class="section-vehicle">
+        <select class="input-vehicle" v-model="year" placeholder="Year">
+          <option value="1">Year</option>
+          <option value="2021">2021</option>
+          <option value="2020">2020</option>
+          <option value="2019">2019</option>
+          <option value="2018">2018</option>
+          <option value="2017">2017</option>
+          <option value="2016">2016</option>
+          <option value="2015">2015</option>
+          <option value="2014">2014</option>
+          <option value="2013">2013</option>
+          <option value="2012">2012</option>
+          <option value="2011">2011</option>
+          <option value="2010">2010</option>
+          <option value="2009">2009</option>
+          <option value="2008">2008</option>
+          <option value="2007">2007</option>
+        </select>
+        <input
+          @keyup="getMake()"
+          class="input-vehicle"
+          id="make"
+          type="text"
+          v-model="make"
+          placeholder="Make"
+        />
+        <ul class="list"></ul>
+        <input
+          class="input-vehicle"
+          type="text"
+          v-model="model"
+          placeholder="Model"
+        />
+        <select class="input-vehicle" v-model="transmission">
+          <option class="placeholder" value="">Transmission</option>
+          <option value="a">Automatic</option>
+          <option value="m">Manual</option>
+        </select>
+      </section>
+
+      <button class="btn-total-cost" @click="getMPG(); calculateCost()">
+        Calculate
+      </button>
+      <div class="total-cost">{{ totalCost }}</div>
+      <div id="bottom-shape"></div>
     </div>
   </body>
   <script src="/main.js"></script>
