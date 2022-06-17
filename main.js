@@ -1,51 +1,46 @@
 "use strict";
 
-let carMake = [
-  `Toyota`,
-  `Honda`,
-  `Chevrolet`,
-  `Ford`,
-  `Mercedes-Benz`,
-  `Jeep`,
-  `BMW`,
-  `Porsche`,
-  `Subaru`,
-  `Nissan`,
-  `Cadillac`,
-  `Volkswagen`,
-  `Lexus`,
-  `Audi`,
-  `Ferrari`,
-  `Volvo`,
-  `Jaguar`,
-  `GMC`,
-  `Buick`,
-  `Acura`,
-  `Bentley`,
-  `Dodge`,
-  `Hyundai`,
-  `Lincoln`,
-  `Mazda`,
-  `Land Rover`,
-  `Ram`,
-  `Kia`,
-  `Chrysler`,
-  `Pontiac`,
-  `Infiniti`,
-  `Mitsubishi`,
-  `Oldsmobile`,
-  `Maserati`,
-  `Aston Martin`,
-  `Suzuki`,
-];
-
-let sortedCarMake = carMake.sort();
-
-let searchMake = document.getElementById(`make`);
-
 const app = Vue.createApp({
   data() {
     return {
+      carMake: [
+        `Toyota`,
+        `Honda`,
+        `Chevrolet`,
+        `Ford`,
+        `Mercedes-Benz`,
+        `Jeep`,
+        `BMW`,
+        `Porsche`,
+        `Subaru`,
+        `Nissan`,
+        `Cadillac`,
+        `Volkswagen`,
+        `Lexus`,
+        `Audi`,
+        `Ferrari`,
+        `Volvo`,
+        `Jaguar`,
+        `GMC`,
+        `Buick`,
+        `Acura`,
+        `Bentley`,
+        `Dodge`,
+        `Hyundai`,
+        `Lincoln`,
+        `Mazda`,
+        `Land Rover`,
+        `Ram`,
+        `Kia`,
+        `Chrysler`,
+        `Pontiac`,
+        `Infiniti`,
+        `Mitsubishi`,
+        `Oldsmobile`,
+        `Maserati`,
+        `Aston Martin`,
+        `Suzuki`,
+      ],
       make: ``,
       model: ``,
       year: ``,
@@ -65,6 +60,8 @@ const app = Vue.createApp({
   },
   methods: {
     getMake() {
+      let sortedCarMake = this.carMake.sort();
+      let searchMake = document.getElementById(`make`);
       for (let i of sortedCarMake) {
         if (
           i.toLowerCase().startsWith(searchMake.value.toLowerCase()) &&
@@ -72,7 +69,7 @@ const app = Vue.createApp({
         ) {
           let listItem = document.createElement(`li`);
           listItem.classList.add(`list-items`);
-          listItem.setAttribute(`onclick`, `displayNames('` + i + `'`);
+          listItem.setAttribute(`onclick`, `displayNames('` + i + `')`);
           let result = `<b>` + i.substr(0, searchMake.value.length) + `</b>`;
           result += i.substr(searchMake.value.length);
           listItem.innerHTML = result;
@@ -82,6 +79,9 @@ const app = Vue.createApp({
       function displayNames(value) {
         searchMake.value = value;
       }
+    },
+    displayNames(value) {
+      this.searchMake.value = value;
     },
     getMPG() {
       let mpg = fetch(
