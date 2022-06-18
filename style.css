@@ -66,6 +66,23 @@ select {
   box-shadow: 0 0.3rem 0.6rem 0rem rgba(51, 51, 51, 0.365);
 }
 
+ul {
+  list-style: none;
+}
+
+li {
+  text-align: center;
+  font-size: 1.6rem;
+  line-height: 3rem;
+  font-weight: 700;
+  width: 16rem;
+  height: 3rem;
+  color: #333;
+  background-color: white;
+  border: 1px solid #333;
+  cursor: pointer;
+}
+
 button {
   font-size: 1.6rem;
   text-align: center;
@@ -155,10 +172,14 @@ button {
   border-radius: 3rem;
 }
 
-.list-items {
-  cursor: pointer;
-  color: #333;
-  font-size: 1.6rem;
+.make-list {
+  position: relative;
+}
+
+.car-makes {
+  position: absolute;
+  top: 4rem;
+  left: 0;
 }
 
 .placeholder {

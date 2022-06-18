@@ -36,7 +36,7 @@
 
       <section class="section-vehicle">
         <select class="input-vehicle" v-model="year" placeholder="Year">
-          <option value="1">Year</option>
+          <option value="">Year</option>
           <option value="2021">2021</option>
           <option value="2020">2020</option>
           <option value="2019">2019</option>
@@ -53,15 +53,29 @@
           <option value="2008">2008</option>
           <option value="2007">2007</option>
         </select>
-        <input
-          @keyup="getMake()"
-          class="input-vehicle"
-          id="make"
-          type="text"
-          v-model="make"
-          placeholder="Make"
-        />
-        <ul class="list"></ul>
+        <div class="make-list">
+          <input
+            @input="getMake"
+            @focus="autoComplete = true"
+            @blur="autoComplete = false"
+            class="input-vehicle"
+            type="text"
+            v-model="make"
+            placeholder="Make"
+            autocomplete="off"
+          />
+          <div
+            class="car-makes"
+            v-if="filteredCarMake && autoComplete && make !== ``"
+          >
+            <ul>
+              <li v-for="car in filteredCarMake" @mousedown="setMake(car)">
+                {{ car }}
+              </li>
+            </ul>
+          </div>
+        </div>
+
         <input
           class="input-vehicle"
           type="text"

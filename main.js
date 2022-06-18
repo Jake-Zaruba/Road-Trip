@@ -3,6 +3,7 @@
 const app = Vue.createApp({
   data() {
     return {
+      make: ``,
       carMake: [
         `Toyota`,
         `Honda`,
@@ -41,7 +42,8 @@ const app = Vue.createApp({
         `Aston Martin`,
         `Suzuki`,
       ],
-      make: ``,
+      filteredCarMake: [],
+      autoComplete: false,
       model: ``,
       year: ``,
       transmission: ``,
@@ -59,29 +61,9 @@ const app = Vue.createApp({
     };
   },
   methods: {
-    getMake() {
-      let sortedCarMake = this.carMake.sort();
-      let searchMake = document.getElementById(`make`);
-      for (let i of sortedCarMake) {
-        if (
-          i.toLowerCase().startsWith(searchMake.value.toLowerCase()) &&
-          searchMake.value != ``
-        ) {
-          let listItem = document.createElement(`li`);
-          listItem.classList.add(`list-items`);
-          listItem.setAttribute(`onclick`, `displayNames('` + i + `')`);
-          let result = `<b>` + i.substr(0, searchMake.value.length) + `</b>`;
-          result += i.substr(searchMake.value.length);
-          listItem.innerHTML = result;
-          document.querySelector(`.list`).appendChild(listItem);
-        }
-      }
-      function displayNames(value) {
-        searchMake.value = value;
-      }
-    },
-    displayNames(value) {
-      this.searchMake.value = value;
+    setMake(make) {
+      this.make = make;
+      this.autoComplete = false;
     },
     getMPG() {
       let mpg = fetch(
@@ -124,7 +106,6 @@ const app = Vue.createApp({
       )
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
           this.userState = data.results[0].locations[0].adminArea3;
           let lat = data.results[0].locations[0].displayLatLng.lat;
           let lng = data.results[0].locations[0].displayLatLng.lng;
@@ -150,7 +131,6 @@ const app = Vue.createApp({
           let lat = data.results[0].locations[0].displayLatLng.lat;
           let lng = data.results[0].locations[0].displayLatLng.lng;
           this.destinationCoords = `${lat},${lng}`;
-          console.log(data);
         })
         .catch((error) => {
           console.log(`Error:`, error);
@@ -170,7 +150,6 @@ const app = Vue.createApp({
       )
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
           this.userState = data.results[0].locations[0].adminArea3;
           let lat = data.results[0].locations[0].displayLatLng.lat;
           let lng = data.results[0].locations[0].displayLatLng.lng;
@@ -234,45 +213,13 @@ const app = Vue.createApp({
         });
     },
   },
+  computed: {
+    getMake() {
+      this.filteredCarMake = this.carMake.filter((make) => {
+        return make.toLowerCase().startsWith(this.make.toLowerCase());
+      });
+    },
+  },
 });
 
 app.mount(`#app`);
-
-// fetch(
-//   `https://maps.googleapis.com/maps/api/place/autocomplete/json?key=AIzaSyAJJIxQjX1zxfAa8IhL3nsBhelzIR7gWDY&input=chicago&components=country:us`,
-//   {
-//     method: "GET",
-//     headers: {
-//       "Access-Control-Allow-Credentials": true,
-//       "Access-Control-Allow-Headers": `application/json`,
-//       "Access-Control-Allow-Methods": "GET, POST",
-//       "Access-Control-Allow-Origin": "*",
-//     },
-//     // contentType: "application/json",
-//   }
-// )
-//   .then((response) => response.json())
-//   .then((data) => {
-//     console.log(`Success:`, data);
-//   })
-//   .catch((error) => {
-//     console.log(`Error:`, error);
-//   });
-
-// apikey 4LTK6ui9IzksjBgCY2VIXt:7FX543FJ3ax3CFszotw3ur
-
-// fetch(`https://api.collectapi.com/gasPrice/usaCitiesList`, {
-//   method: "GET",
-//   contentType: "application/json",
-//   headers: {
-//     authorization: "apikey 4LTK6ui9IzksjBgCY2VIXt:7FX543FJ3ax3CFszotw3ur",
-//   },
-// })
-//   .then((response) => response.json())
-//   .then((data) => {
-//     // console.log(data);
-//     console.log(data);
-//   })
-//   .catch((error) => {
-//     console.log(`Error:`, error);
-//   });
