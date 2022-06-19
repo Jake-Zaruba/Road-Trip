@@ -1,6 +1,7 @@
 <template>
   <div id="top-shape"></div>
-  <img src="./assets/car.svg" id="icon-car" alt="Icon of a cartoon car" />
+  <div v-if="loading" id="clouds" class="loading"></div>
+  <img src="./assets/car.svg" id="icon-car" alt="Icon of a cartoon car." />
   <select class="select-trip" v-model="selectTrip">
     <option value="" selected>&nbsp; Trip type</option>
     <option value="one way">One-Way</option>
@@ -174,6 +175,7 @@ export default {
       distance: `0`,
       gasPrice: ``,
       totalCost: `$0`,
+      loading: false,
       // add option for a one way trip //
     };
   },
@@ -290,6 +292,9 @@ export default {
         stopBtn.innerHTML = `Add stop`;
         stopContainer.classList.remove(`stop-added`);
         stopContainer.classList.add(`stop-removed`);
+        setTimeout(() => {
+          stopContainer.classList.add(`delayed-stop-removed`);
+        }, 2000);
         moveElements.forEach((element) => {
           element.classList.remove(`move-down`);
           element.classList.add(`move-up`);
@@ -424,6 +429,7 @@ export default {
       }
     },
     calculateCost() {
+      this.loading = true;
       fetch(
         `https://api.collectapi.com/gasPrice/stateUsaPrice?state=${this.userState}`,
         {
@@ -445,9 +451,11 @@ export default {
           } else if (this.selectTrip === `round trip`) {
             this.totalCost = `$` + finalCost.toFixed(2) * 2;
           }
+          this.loading = false;
         })
         .catch((error) => {
           console.log(`Error:`, error);
+          this.loading = false;
         });
     },
     newTrip() {
@@ -524,6 +532,18 @@ export default {
   left: 40vw;
   height: 12rem;
   width: 20vw;
+}
+
+.loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-image: url(./assets/clouds.svg);
+  background-size: cover;
+  z-index: 100;
+  opacity: 0.7;
 }
 
 *:focus {
@@ -666,7 +686,14 @@ button {
 }
 
 .stop-removed {
+  visibility: visible;
+  pointer-events: all;
   animation: stop-out 0.4s forwards;
+}
+
+.delayed-stop-removed {
+  visibility: hidden;
+  pointer-events: none;
 }
 
 @keyframes stop-in {
