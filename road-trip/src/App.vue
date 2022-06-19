@@ -408,7 +408,7 @@ export default {
                 // calculate distance between user's location and destination //
 
                 fetch(
-                  `http://www.mapquestapi.com/directions/v2/route?key=VWtLJjUxEFuyRfoQSeoWjGBFJHVhossb&from=${this.userLocation}&to=${this.stopCoords}&to=${this.destinationCoords}`,
+                  `http://www.mapquestapi.com/directions/v2/route?key=VWtLJjUxEFuyRfoQSeoWjGBFJHVhossb&ambiguous=check&from=${this.userLocation}&to=${this.stopCoords}&to=${this.destinationCoords}`,
                   {
                     method: "GET",
                     contentType: "application/json",
@@ -625,8 +625,7 @@ button {
 }
 
 .location-destination {
-  grid-column: 2;
-  grid-row: 2;
+  z-index: 10;
 }
 
 .btn-stop {
@@ -647,6 +646,8 @@ button {
   background: none;
   border: none;
   cursor: pointer;
+  pointer-events: none;
+  visibility: hidden;
   opacity: 0;
 }
 .move-up {
@@ -659,6 +660,8 @@ button {
 }
 
 .stop-added {
+  visibility: visible;
+  pointer-events: all;
   animation: stop-in 0.4s forwards 0.3s;
 }
 
