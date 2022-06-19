@@ -23,3 +23,9 @@ body {
   width: 100vw;
   justify-content: center;
 }
+
+@media (max-width: 44em) {
+  html {
+    font-size: 50%;
+  }
+}

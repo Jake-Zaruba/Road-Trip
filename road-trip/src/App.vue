@@ -1,7 +1,8 @@
 <template>
   <div id="top-shape"></div>
+  <img src="./assets/car.svg" id="icon-car" alt="Icon of a cartoon car" />
   <select class="select-trip" v-model="selectTrip">
-    <option value="" selected>Trip type</option>
+    <option value="" selected>&nbsp; Trip type</option>
     <option value="one way">One-Way</option>
     <option value="round trip">Round trip</option>
   </select>
@@ -14,18 +15,18 @@
       v-model="userAddress"
       placeholder="Enter address"
     />
-    <transition name="stop">
-      <li v-if="visible" class="stop-container" key="stop">
-        <label for="stopAddress">First stop</label>
-        <input
-          class="input-location location-stop"
-          type="text"
-          name="stopAdress"
-          v-model="stopAddress"
-          placeholder="Enter address"
-        />
-      </li>
-    </transition>
+
+    <li class="stop-container" key="stop">
+      <label for="stopAddress">First stop</label>
+      <input
+        class="input-location location-stop"
+        type="text"
+        name="stopAdress"
+        v-model="stopAddress"
+        placeholder="Enter address"
+      />
+    </li>
+
     <label for="destination" class="move">Destination</label>
     <input
       class="input-location location-destination move"
@@ -35,13 +36,7 @@
       v-model="destination"
       placeholder="Enter destination"
     />
-    <button
-      class="btn-stop move"
-      @mouseup="visible = !visible"
-      @click="addStop()"
-    >
-      Add stop
-    </button>
+    <button class="btn-stop move" @click="addStop()">Add stop</button>
   </section>
   <section class="section-calculate move">
     <div class="distance">{{ distance }}<span class="miles"> mi</span></div>
@@ -103,15 +98,15 @@
   </section>
 
   <button
-    class="btn-total-cost move"
+    class="btn-total-cost"
     @click="
       getMPG();
       calculateCost();
     "
   >
-    Calculate
+    Go!
   </button>
-  <button class="btn-total-cost move" @click="newTrip()">New trip</button>
+  <button class="btn-new-trip" @click="newTrip()">New trip</button>
   <div class="total-cost">{{ totalCost }}</div>
   <div id="bottom-shape"></div>
 </template>
@@ -173,7 +168,6 @@ export default {
       destination: ``,
       destinationCity: ``,
       destinationCoords: ``,
-      visible: false,
       stopAdded: false,
       stopAddress: ``,
       stopCoords: ``,
@@ -282,15 +276,20 @@ export default {
     addStop() {
       let stopBtn = document.querySelector(`.btn-stop`);
       let moveElements = document.querySelectorAll(`.move`);
+      let stopContainer = document.querySelector(`.stop-container`);
       this.stopAdded = !this.stopAdded;
       if (this.stopAdded) {
         stopBtn.innerHTML = `Remove stop`;
+        stopContainer.classList.add(`stop-added`);
+        stopContainer.classList.remove(`stop-removed`);
         moveElements.forEach((element) => {
-          element.classList.remove(`move-up`);
           element.classList.add(`move-down`);
+          element.classList.remove(`move-up`);
         });
       } else if (!this.stopAdded) {
         stopBtn.innerHTML = `Add stop`;
+        stopContainer.classList.remove(`stop-added`);
+        stopContainer.classList.add(`stop-removed`);
         moveElements.forEach((element) => {
           element.classList.remove(`move-down`);
           element.classList.add(`move-up`);
@@ -299,7 +298,7 @@ export default {
     },
     calculateDistance() {
       // fetch starting address //
-      if (this.stopAdded === false) {
+      if (!this.stopAdded) {
         const address = this.userAddress.replaceAll(` `, `+`);
         fetch(
           `http://www.mapquestapi.com/geocoding/v1/address?key=VWtLJjUxEFuyRfoQSeoWjGBFJHVhossb
@@ -350,7 +349,7 @@ export default {
                   });
               });
           });
-      } else if ((this.stopAdded = true)) {
+      } else if (this.stopAdded) {
         const address = this.userAddress.replaceAll(` `, `+`);
         fetch(
           `http://www.mapquestapi.com/geocoding/v1/address?key=VWtLJjUxEFuyRfoQSeoWjGBFJHVhossb
@@ -468,7 +467,7 @@ export default {
         (this.stopCoords = ``),
         (this.distance = `0`),
         (this.gasPrice = ``),
-        (this.totalCost = `Round trip cost`);
+        (this.totalCost = `$0`);
     },
   },
   computed: {
@@ -517,6 +516,14 @@ export default {
   height: 6vh;
   width: 40vw;
   z-index: 1;
+}
+
+#icon-car {
+  position: absolute;
+  top: 12vh;
+  left: 40vw;
+  height: 12rem;
+  width: 20vw;
 }
 
 *:focus {
@@ -574,8 +581,24 @@ button {
   cursor: pointer;
 }
 
+.btn-new-trip {
+  position: absolute;
+  bottom: 3rem;
+  right: 2rem;
+  width: 9rem;
+  color: #333;
+  background-color: #c8f9d0;
+  z-index: 1;
+}
+
 .btn-total-cost {
-  margin: 0 auto 2rem auto;
+  position: absolute;
+  bottom: 3rem;
+  right: 12.2rem;
+  width: 4rem;
+  color: #333;
+  background-color: #c8f9d0;
+  z-index: 1;
 }
 
 .section-location {
@@ -626,29 +649,21 @@ button {
   cursor: pointer;
   opacity: 0;
 }
-
-.stop-added {
-  animation: addStop 0.5s ease-in-out forwards;
-}
-
-.stop-removed {
-  animation: removeStop 0.5s ease-in-out forwards;
-}
-
 .move-up {
-  animation: moveDown 0.3s ease-out reverse 0.5s;
+  transform: translateY(7.8rem);
+  animation: moveUp 0.5s cubic-bezier(0.2, 0.2, 0.3, 1) forwards 0.4s;
 }
 
 .move-down {
-  animation: moveDown 0.3s ease-out forwards;
+  animation: moveDown 0.5s cubic-bezier(0.2, 0.2, 0.3, 1) forwards;
 }
 
-.stop-enter-active {
-  animation: stop-in 0.5s forwards 0.5s;
+.stop-added {
+  animation: stop-in 0.4s forwards 0.3s;
 }
 
-.stop-leave-active {
-  animation: stop-out 0.5s forwards 0.5s;
+.stop-removed {
+  animation: stop-out 0.4s forwards;
 }
 
 @keyframes stop-in {
@@ -679,11 +694,19 @@ button {
   }
 }
 
+@keyframes moveUp {
+  0% {
+  }
+  100% {
+    transform: translateY(0rem);
+  }
+}
+
 @keyframes moveDown {
   0% {
   }
   100% {
-    transform: translateY(7.2rem);
+    transform: translateY(7.8rem);
   }
 }
 
@@ -746,7 +769,7 @@ button {
 .total-cost {
   position: absolute;
   bottom: 3vh;
-  left: 30vw;
+  left: 35vw;
   font-size: 1.6rem;
   text-align: center;
   line-height: 6vh;
@@ -754,7 +777,7 @@ button {
   background-color: white;
   margin: 0 auto;
   height: 6vh;
-  width: 40vw;
+  width: 30vw;
   border-radius: 3rem;
   z-index: 1;
 }
