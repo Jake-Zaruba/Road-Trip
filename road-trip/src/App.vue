@@ -1,7 +1,18 @@
 <template>
   <div id="top-shape"></div>
   <div v-if="loading" id="clouds" class="loading"></div>
-  <img src="./assets/car.svg" id="icon-car" alt="Icon of a cartoon car." />
+  <img
+    v-if="!loading"
+    src="./assets/car.svg"
+    class="icon-car"
+    alt="Icon of a cartoon car."
+  />
+  <img
+    v-if="loading"
+    src="./assets/car-animated.svg"
+    class="icon-car"
+    alt="Icon of a cartoon car."
+  />
   <select class="select-trip" v-model="selectTrip">
     <option value="" selected>&nbsp; Trip type</option>
     <option value="one way">One-Way</option>
@@ -139,7 +150,6 @@ export default {
         `GMC`,
         `Buick`,
         `Acura`,
-        `Bentley`,
         `Dodge`,
         `Hyundai`,
         `Lincoln`,
@@ -153,12 +163,164 @@ export default {
         `Mitsubishi`,
         `Oldsmobile`,
         `Maserati`,
-        `Aston Martin`,
         `Suzuki`,
       ],
       filteredCarMake: [],
-      autoComplete: false,
       model: ``,
+      carModel: [],
+      filteredCarModel: [
+        // Audi //
+        `100`,
+        `Cabriolet`,
+        `90`,
+        `100 wagon`,
+        `A4`,
+        `A6`,
+        `A3`,
+        `R8 rwd`,
+        `R8 Spyder rwd`,
+        `R8 2wd`,
+        `100 Quattro Qagon`,
+        `90 quattro`,
+        `S4`,
+        `V8`,
+        `A6 Quattro`,
+        `S6`,
+        `4000s Quattro`,
+        `A8`,
+        // Acura //
+        `Integra`,
+        `Legend`,
+        `Vigor`,
+        `2.5TL`,
+        `3.5RL`,
+        `TLX fwd a-spec`,
+        `TLX fwd`,
+        `RDX fwd`,
+        `RDX fwd a-spec`,
+        `RLX`,
+        `MDX fwd`,
+        `ILX`,
+        `NSX`,
+        `SLX`,
+        `MDX`,
+        `MDX 4wd`,
+        `RL`,
+        `RDX 4wd`,
+        `TL 4wd`,
+        `ZDX 4wd`,
+        // BMW //
+        `X1 Sdrive28i`,
+        `X2 Sdrive28i`,
+        `228i Gran Coupe`,
+        `740i`,
+        `740iL`,
+        `750iL`,
+        `525i Touring`,
+        `318i Convertable`,
+        `325i Convertable`,
+        `318i/318iS`,
+        `325i/325iS`,
+        `850Ci`,
+        `850CSi`,
+        `525i`,
+        `530i`,
+        `540i`,
+        `740i`,
+        `740iL`,
+        `750iL`,
+        `530i Touring`,
+        `325xi`,
+        `325xi Sport Wagon`,
+        `X5`,
+        `330xi`,
+        // Buick //
+        `Century`,
+        `Regal`,
+        `Riviera`,
+        `Lesabre`,
+        `Park Avenue`,
+        `Century Wagon`,
+        `Skylark`,
+        `Encore`,
+        `Lacrosse Eassaist`,
+        `Lacrosse`,
+        `Cascada`,
+        `Envision fwd`,
+        `Enclave fwd`,
+        `Roadmaster`,
+        `Roadmaster Wagon`,
+        `Coachbuilder Wagon`,
+        `Rainer 2wd`,
+        `Rendezvous awd`,
+        `Rainer awd`,
+        `Terraza awd`,
+        `Enclave awd`,
+        `Lacrosse awd`,
+        `Encore awd`,
+        `Regal awd`,
+        `Regal TourX awd`,
+        `Envision awd`,
+        // Chevrolet //
+        `Lumina`,
+        `Cavalier Wagon`,
+        `Lumina/apv Minivan 2wd`,
+        `Cavalier`,
+        `Sprint`,
+        `Beretta`,
+        `Corsica`,
+        `Lumina Minivan 2wd`,
+        `Equinox fwd`,
+        `Impala`,
+        `Malibu`,
+        `Traverse fwd`,
+        `Cruze`,
+        `Cruze Premier`,
+        `Sonic`,
+        `Cruze Hatchback`,
+        `Cruze Premier Hatchback`,
+        `Sonic A5`,
+        `Sonic 5`,
+        `Volt`,
+        `Malibu Hybrid`,
+        `Spark`,
+        `Spark Activ`,
+        `Caprice`,
+        `Caprice Wagon`,
+        `S10 Pickup 2wd`,
+        `C1500 Pickup 2wd`,
+        `Pickup 2500 2wd`,
+        `Suburban C10 2wd`,
+        `Corvette`,
+        `Camaro`,
+        `Silverado 15 Hybrid 2wd`,
+        `Silverado C15 Cab Chassis 2wd`,
+        `Tahoe C1500 2wd`,
+        `Suburban C1500 2wd`,
+        `Colorado 2wd`,
+        `Colorado Cab Chassis 2wd`,
+        `K1500 Pickup 4wd`,
+        `Pickup 2500 4wd`,
+        `S10 Pickup 4wd`,
+        `Astro awd (cargo)`,
+        `Astro awd (passenger)`,
+        `Blazer 1500 4wd`,
+        `Suburban 1500 4wd`,
+        `S10 Blazer 4wd`,
+        `K10 Blazer 4wd`,
+        `Silverado K15 4wd`,
+        `Colorado 4wd`,
+        `Colorado Cab Chassis inc 4wd`,
+        `Colorado Crew Cab 4wd`,
+        `Silverado 15 Hybrid 4wd`,
+        `Tahoe 1500 4wd`,
+        `Tahoe Hybrid 4wd`,
+        `Avalanche 1500 4wd`,
+        `Colorado ZR2 4wd`,
+        // Cadillad //
+        ``,
+      ],
+      autoComplete: false,
       year: ``,
       transmission: ``,
       userMPG: ``,
@@ -282,6 +444,7 @@ export default {
       this.stopAdded = !this.stopAdded;
       if (this.stopAdded) {
         stopBtn.innerHTML = `Remove stop`;
+        stopContainer.classList.remove(`delayed-stop-removed`);
         stopContainer.classList.add(`stop-added`);
         stopContainer.classList.remove(`stop-removed`);
         moveElements.forEach((element) => {
@@ -294,7 +457,7 @@ export default {
         stopContainer.classList.add(`stop-removed`);
         setTimeout(() => {
           stopContainer.classList.add(`delayed-stop-removed`);
-        }, 2000);
+        }, 500);
         moveElements.forEach((element) => {
           element.classList.remove(`move-down`);
           element.classList.add(`move-up`);
@@ -522,16 +685,18 @@ export default {
   box-shadow: none !important;
   margin: 0 auto;
   height: 6vh;
-  width: 40vw;
+  width: 40%;
   z-index: 1;
 }
 
-#icon-car {
-  position: absolute;
-  top: 12vh;
-  left: 40vw;
-  height: 12rem;
-  width: 20vw;
+.icon-car {
+  height: 5rem;
+  width: 8rem;
+  align-self: center;
+  justify-self: center;
+  transform: scale(3.8);
+  margin: -5rem 0 6rem 4.5rem;
+  animation: carLoadIn 0.3s linear;
 }
 
 .loading {
@@ -544,6 +709,25 @@ export default {
   background-size: cover;
   z-index: 100;
   opacity: 0.7;
+  animation: cloudsLoadIn 0.3s linear;
+}
+
+@keyframes carLoadIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes cloudsLoadIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.7;
+  }
 }
 
 *:focus {
@@ -717,10 +901,11 @@ button {
   }
   95% {
     opacity: 0;
+    transform: translateX(12rem);
   }
   100% {
     opacity: 0;
-    transform: translateX(12rem);
+    transform: translateX(0rem);
   }
 }
 
@@ -807,7 +992,7 @@ button {
   background-color: white;
   margin: 0 auto;
   height: 6vh;
-  width: 30vw;
+  width: 30%;
   border-radius: 3rem;
   z-index: 1;
 }
