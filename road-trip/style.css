@@ -28,4 +28,26 @@ body {
   html {
     font-size: 50%;
   }
+
+  #app .btn-total-cost {
+    height: 5vh;
+    width: 5rem;
+    bottom: 3.5vh;
+    left: 3vw;
+  }
+
+  #app .btn-new-trip {
+    height: 5vh;
+    width: 10rem;
+    bottom: 3.5vh;
+    right: 3vw;
+  }
+
+  #app .total-cost {
+    line-height: 5vh;
+    bottom: 3.5vh;
+    left: 35vw;
+    height: 5vh;
+    width: 30%;
+  }
 }

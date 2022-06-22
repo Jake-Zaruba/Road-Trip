@@ -13,7 +13,7 @@
     class="icon-car"
     alt="Icon of a cartoon car."
   />
-  <select class="select-trip" v-model="selectTrip">
+  <select class="select-trip current-selection" v-model="selectTrip">
     <option value="" selected>&nbsp; Trip type</option>
     <option value="one way">One-Way</option>
     <option value="round trip">Round trip</option>
@@ -119,7 +119,7 @@
     Go!
   </button>
   <button class="btn-new-trip" @click="newTrip()">New trip</button>
-  <div class="total-cost">{{ totalCost }}</div>
+  <div class="total-cost">&nbsp; {{ totalCost }}</div>
   <div id="bottom-shape"></div>
 </template>
 
@@ -130,40 +130,31 @@ export default {
     return {
       make: ``,
       carMake: [
-        `Toyota`,
-        `Honda`,
-        `Chevrolet`,
-        `Ford`,
-        `Mercedes-Benz`,
-        `Jeep`,
-        `BMW`,
-        `Porsche`,
-        `Subaru`,
-        `Nissan`,
-        `Cadillac`,
-        `Volkswagen`,
-        `Lexus`,
-        `Audi`,
-        `Ferrari`,
-        `Volvo`,
-        `Jaguar`,
-        `GMC`,
-        `Buick`,
         `Acura`,
+        `BMW`,
+        `Buick`,
+        `Cadillac`,
+        `Chevrolet`,
+        `Chrysler`,
         `Dodge`,
+        `Ford`,
+        `GMC`,
+        `Honda`,
         `Hyundai`,
+        `Infiniti`,
+        `Jeep`,
+        `Kia`,
+        `Land Rover`,
+        `Lexus`,
         `Lincoln`,
         `Mazda`,
-        `Land Rover`,
-        `Ram`,
-        `Kia`,
-        `Chrysler`,
+        `Mercedes-Benz`,
+        `Nissan`,
         `Pontiac`,
-        `Infiniti`,
-        `Mitsubishi`,
-        `Oldsmobile`,
-        `Maserati`,
-        `Suzuki`,
+        `Ram`,
+        `Subaru`,
+        `Toyota`,
+        `Volkswagen`,
       ],
       filteredCarMake: [],
       model: ``,
@@ -171,154 +162,280 @@ export default {
       filteredCarModel: [
         // Audi //
         `100`,
-        `Cabriolet`,
-        `90`,
         `100 wagon`,
+        `4000s Quattro`,
+        `100 Quattro Wagon`,
+        `90`,
+        `90 quattro`,
+        `A3`,
         `A4`,
         `A6`,
-        `A3`,
+        `A6 Quattro`,
+        `A8`,
+        `Cabriolet`,
+        `R8 2wd`,
         `R8 rwd`,
         `R8 Spyder rwd`,
-        `R8 2wd`,
-        `100 Quattro Qagon`,
-        `90 quattro`,
         `S4`,
-        `V8`,
-        `A6 Quattro`,
         `S6`,
-        `4000s Quattro`,
-        `A8`,
+        `V8`,
         // Acura //
-        `Integra`,
-        `Legend`,
-        `Vigor`,
         `2.5TL`,
         `3.5RL`,
-        `TLX fwd a-spec`,
-        `TLX fwd`,
-        `RDX fwd`,
-        `RDX fwd a-spec`,
-        `RLX`,
-        `MDX fwd`,
+        `Integra`,
         `ILX`,
-        `NSX`,
-        `SLX`,
+        `Legend`,
         `MDX`,
         `MDX 4wd`,
-        `RL`,
+        `MDX fwd`,
+        `NSX`,
         `RDX 4wd`,
+        `RDX fwd`,
+        `RDX fwd a-spec`,
+        `RL`,
+        `RLX`,
+        `SLX`,
         `TL 4wd`,
+        `TLX fwd a-spec`,
+        `TLX fwd`,
+        `Vigor`,
         `ZDX 4wd`,
         // BMW //
-        `X1 Sdrive28i`,
-        `X2 Sdrive28i`,
         `228i Gran Coupe`,
-        `740i`,
-        `740iL`,
-        `750iL`,
-        `525i Touring`,
-        `318i Convertable`,
-        `325i Convertable`,
         `318i/318iS`,
+        `318i Convertable`,
+        `325xi`,
+        `325i Convertable`,
+        `325xi Sport Wagon`,
+        `330xi`,
         `325i/325iS`,
-        `850Ci`,
-        `850CSi`,
         `525i`,
+        `525i Touring`,
         `530i`,
+        `530i Touring`,
         `540i`,
         `740i`,
         `740iL`,
         `750iL`,
-        `530i Touring`,
-        `325xi`,
-        `325xi Sport Wagon`,
+        `850Ci`,
+        `850CSi`,
+        `X1 Sdrive28i`,
+        `X2 Sdrive28i`,
         `X5`,
-        `330xi`,
         // Buick //
+        `Cascada`,
         `Century`,
-        `Regal`,
-        `Riviera`,
+        `Century Wagon`,
+        `Coachbuilder Wagon`,
+        `Encore`,
+        `Enclave fwd`,
+        `Envision fwd`,
+        `Envision awd`,
+        `Enclave awd`,
+        `Encore awd`,
+        `Lacrosse`,
+        `Lacrosse awd`,
+        `Lacrosse Eassaist`,
         `Lesabre`,
         `Park Avenue`,
-        `Century Wagon`,
-        `Skylark`,
-        `Encore`,
-        `Lacrosse Eassaist`,
-        `Lacrosse`,
-        `Cascada`,
-        `Envision fwd`,
-        `Enclave fwd`,
-        `Roadmaster`,
-        `Roadmaster Wagon`,
-        `Coachbuilder Wagon`,
         `Rainer 2wd`,
-        `Rendezvous awd`,
         `Rainer awd`,
-        `Terraza awd`,
-        `Enclave awd`,
-        `Lacrosse awd`,
-        `Encore awd`,
+        `Regal`,
         `Regal awd`,
         `Regal TourX awd`,
-        `Envision awd`,
+        `Rendezvous awd`,
+        `Riviera`,
+        `Roadmaster`,
+        `Roadmaster Wagon`,
+        `Skylark`,
+        `Terraza awd`,
         // Chevrolet //
-        `Lumina`,
-        `Cavalier Wagon`,
-        `Lumina/apv Minivan 2wd`,
-        `Cavalier`,
-        `Sprint`,
-        `Beretta`,
-        `Corsica`,
-        `Lumina Minivan 2wd`,
-        `Equinox fwd`,
-        `Impala`,
-        `Malibu`,
-        `Traverse fwd`,
-        `Cruze`,
-        `Cruze Premier`,
-        `Sonic`,
-        `Cruze Hatchback`,
-        `Cruze Premier Hatchback`,
-        `Sonic A5`,
-        `Sonic 5`,
-        `Volt`,
-        `Malibu Hybrid`,
-        `Spark`,
-        `Spark Activ`,
-        `Caprice`,
-        `Caprice Wagon`,
-        `S10 Pickup 2wd`,
-        `C1500 Pickup 2wd`,
-        `Pickup 2500 2wd`,
-        `Suburban C10 2wd`,
-        `Corvette`,
-        `Camaro`,
-        `Silverado 15 Hybrid 2wd`,
-        `Silverado C15 Cab Chassis 2wd`,
-        `Tahoe C1500 2wd`,
-        `Suburban C1500 2wd`,
-        `Colorado 2wd`,
-        `Colorado Cab Chassis 2wd`,
-        `K1500 Pickup 4wd`,
-        `Pickup 2500 4wd`,
-        `S10 Pickup 4wd`,
         `Astro awd (cargo)`,
         `Astro awd (passenger)`,
+        `Avalanche 1500 4wd`,
+        `Beretta`,
         `Blazer 1500 4wd`,
-        `Suburban 1500 4wd`,
-        `S10 Blazer 4wd`,
-        `K10 Blazer 4wd`,
-        `Silverado K15 4wd`,
+        `C1500 Pickup 2wd`,
+        `Camaro`,
+        `Caprice`,
+        `Caprice Wagon`,
+        `Cavalier`,
+        `Cavalier Wagon`,
+        `Colorado 2wd`,
         `Colorado 4wd`,
+        `Colorado Cab Chassis 2wd`,
         `Colorado Cab Chassis inc 4wd`,
         `Colorado Crew Cab 4wd`,
+        `Colorado ZR2 4wd`,
+        `Corsica`,
+        `Corvette`,
+        `Cruze`,
+        `Cruze Hatchback`,
+        `Cruze Premier`,
+        `Cruze Premier Hatchback`,
+        `Equinox fwd`,
+        `Impala`,
+        `K10 Blazer 4wd`,
+        `K1500 Pickup 4wd`,
+        `Lumina`,
+        `Lumina/apv Minivan 2wd`,
+        `Lumina Minivan 2wd`,
+        `Malibu`,
+        `Malibu Hybrid`,
+        `Pickup 2500 2wd`,
+        `Pickup 2500 4wd`,
+        `S10 Blazer 4wd`,
+        `S10 Pickup 2wd`,
+        `S10 Pickup 4wd`,
+        `Silverado 15 Hybrid 2wd`,
         `Silverado 15 Hybrid 4wd`,
+        `Silverado C15 Cab Chassis 2wd`,
+        `Silverado K15 4wd`,
+        `Sonic`,
+        `Sonic A5`,
+        `Sonic 5`,
+        `Spark`,
+        `Sprint`,
+        `Spark Activ`,
+        `Suburban C10 2wd`,
+        `Suburban C1500 2wd`,
+        `Suburban 1500 4wd`,
+        `Tahoe C1500 2wd`,
         `Tahoe 1500 4wd`,
         `Tahoe Hybrid 4wd`,
-        `Avalanche 1500 4wd`,
-        `Colorado ZR2 4wd`,
-        // Cadillad //
-        ``,
+        `Traverse fwd`,
+        `Volt`,
+        // Cadillac //
+        `ATS awd`,
+        `ATS-V`,
+        `Catera`,
+        `Cimarron`,
+        `Commercial Chassis`,
+        `CT6`,
+        `CT6 awd`,
+        `CTS`,
+        `CTS awd`,
+        `CTS-V`,
+        `Deville`,
+        `Deville/Concourse`,
+        `Deville/60 Special`,
+        `Eldorado`,
+        `Escalade 2wd`,
+        `Fleetwood`,
+        `Seville`,
+        `T5 awd`,
+        `XT5`,
+        `XTS`,
+        // Chrysler //
+        `300`,
+        `300 awd`,
+        `Cirrus`,
+        `Concorde`,
+        `Crossfire`,
+        `Crossfire Coupe`,
+        `Fifth Avenue/Imperial`,
+        `Laser`,
+        `Lebaron`,
+        `Lebaron Convertible`,
+        `New Yorker`,
+        `Pacifica`,
+        `Pacifica Hybrid`,
+        `Prowler`,
+        `Sebring`,
+        `Town and Country 2wd`,
+        // Dodge //
+        `B150/b250 Wagon 2wd`,
+        `B350 Wagon 2wd`,
+        `Challenger`,
+        `Charger`,
+        `D100/D150 Pickup 2wd`,
+        `Dynasty`,
+        `Dakota Pickup 2wd`,
+        `Dakota Pickup 4wd`,
+        `Durango rwd`,
+        `Durango awd`,
+        `Durango 4wd`,
+        `Grand Caravan`,
+        `Intrepid`,
+        `Journey`,
+        `Journey awd`,
+        `Ram 50 Pickup 2wd`,
+        `Nitro 4wd`,
+        `Ram 1500 Pickup 4wd`,
+        `Spirit`,
+        // Ford //
+        `Explorer 2wd FFV`,
+        `Explorer fwd`,
+        `Explorer awd`,
+        `Escape awd`,
+        `Escape fwd`,
+        `Expedition 2wd`,
+        `Expedition 4wd`,
+        `F150 Pickup 4wd`,
+        `Fusion fwd`,
+        `Fusion awd`,
+        `Fiesta fwd`,
+        `Flex fwd`,
+        `Flex awd`,
+        `Mustang`,
+        `Ranger 4wd`,
+        `Taurus awd`,
+        `Taurus fws`,
+        // GMC //
+        `Acadia fwd`,
+        `Jimmy 4wd`,
+        `Safari awd`,
+        `Sierra 1500 4wd`,
+        `Sierra C15 2wd`,
+        `Sierra C15 4wd`,
+        `Suburban 1500 4wd`,
+        `Terrain fwd`,
+        `Terrain awd`,
+        `Yukon 1500 4wd`,
+        `Yukon C1500 2wd`,
+        // Honda //
+        `Accord`,
+        `Civic`,
+        `CR-V 2wd`,
+        `CR-V 4wd`,
+        `CR-Z`,
+        `Fit`,
+        `HR-V 2wd`,
+        `HR-V 4wd`,
+        `Odyssey`,
+        `Pilot 2wd`,
+        `Pilot 4wd`,
+        // Hyundai //
+        `Accent`,
+        `Azera`,
+        `Elantra`,
+        `Equus`,
+        `Santa Fe fwd`,
+        `Sonata`,
+        `Tucson fwd`,
+        `Tucson awd`,
+        `Veloster`,
+        // Infiniti //
+        `Q50`,
+        `Q70`,
+        `QX50`,
+        `QX50 awd`,
+        `QX60 awd`,
+        `QX70 awd`,
+        `QX70 rwd`,
+        `QX80 2wd`,
+        `QX80 4wd`,
+        // Jeep //
+        `Cherokee fwd`,
+        `Cherokee 4wd`,
+        `Compass 4wd`,
+        `Compass fwd`,
+        `Gladiator Pickup 4wd`,
+        `Grand Cherokee 2wd`,
+        `Grand Cherokee 4wd`,
+        `Renegade 2wd`,
+        `Renegade 4wd`,
+        `Wrangler 4wd`,
       ],
       autoComplete: false,
       year: ``,
@@ -576,7 +693,7 @@ export default {
                 // calculate distance between user's location and destination //
 
                 fetch(
-                  `http://www.mapquestapi.com/directions/v2/route?key=VWtLJjUxEFuyRfoQSeoWjGBFJHVhossb&ambiguous=check&from=${this.userLocation}&to=${this.stopCoords}&to=${this.destinationCoords}`,
+                  `http://www.mapquestapi.com/directions/v2/route?key=VWtLJjUxEFuyRfoQSeoWjGBFJHVhossb&ambiguous=check&from=${this.userLocation}&to=${this.stopCoords}&to=${this.destinationCoords}&to${this.userLocation}`,
                   {
                     method: "GET",
                     contentType: "application/json",
@@ -609,11 +726,12 @@ export default {
           this.gasPrice = data.result.state.gasoline;
           // trim decimals //
           let finalCost = (this.distance / this.userMPG) * this.gasPrice;
-          if (this.selectTrip === `one way`) {
-            this.totalCost = `$` + finalCost.toFixed(2);
-          } else if (this.selectTrip === `round trip`) {
-            this.totalCost = `$` + finalCost.toFixed(2) * 2;
-          }
+          this.totalCost = `$` + finalCost.toFixed(2);
+          // if (this.selectTrip === `one way`) {
+          //   this.totalCost = `$` + finalCost.toFixed(2);
+          // } else if (this.selectTrip === `round trip`) {
+          //   this.totalCost = `$` + finalCost.toFixed(2) * 2;
+          // }
           this.loading = false;
         })
         .catch((error) => {
@@ -671,6 +789,22 @@ export default {
   border-bottom-left-radius: 6rem;
   border-top-right-radius: 6rem;
 }
+
+/* .current-selection {
+  animation: currentSelection 1.5s linear infinite;
+}
+
+@keyframes currentSelection {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  0% {
+    transform: scale(1);
+  }
+} */
 
 .select-trip {
   position: absolute;
@@ -783,26 +917,6 @@ button {
   border: none;
   border-radius: 3rem;
   cursor: pointer;
-}
-
-.btn-new-trip {
-  position: absolute;
-  bottom: 3rem;
-  right: 2rem;
-  width: 9rem;
-  color: #333;
-  background-color: #c8f9d0;
-  z-index: 1;
-}
-
-.btn-total-cost {
-  position: absolute;
-  bottom: 3rem;
-  right: 12.2rem;
-  width: 4rem;
-  color: #333;
-  background-color: #c8f9d0;
-  z-index: 1;
 }
 
 .section-location {
@@ -979,6 +1093,28 @@ button {
 
 .placeholder {
   color: rgba(51, 51, 51, 0.579);
+}
+
+.btn-new-trip {
+  position: absolute;
+  bottom: 3vh;
+  right: 10vw;
+  height: 6vh;
+  width: 12vw;
+  color: #333;
+  background-color: #c8f9d0;
+  z-index: 1;
+}
+
+.btn-total-cost {
+  position: absolute;
+  bottom: 3vh;
+  right: 25vw;
+  height: 6vh;
+  width: 5rem;
+  color: #333;
+  background-color: #c8f9d0;
+  z-index: 1;
 }
 
 .total-cost {
