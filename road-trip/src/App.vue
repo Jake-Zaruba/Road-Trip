@@ -76,8 +76,8 @@
     <div class="make-list">
       <input
         @input="getMake"
-        @focus="autoComplete = true"
-        @blur="autoComplete = false"
+        @focus="makeAutoComplete = true"
+        @blur="makeAutoComplete = false"
         class="input-vehicle"
         type="text"
         v-model="make"
@@ -86,7 +86,7 @@
       />
       <div
         class="car-makes"
-        v-if="filteredCarMake && autoComplete && make !== ``"
+        v-if="filteredCarMake && makeAutoComplete && make !== ``"
       >
         <ul>
           <li v-for="car in filteredCarMake" @mousedown="setMake(car)">
@@ -99,17 +99,17 @@
     <div class="model-list">
       <input
         @input="getModel"
-        @focus="autoComplete = true"
-        @blur="autoComplete = false"
+        @focus="modelAutoComplete = true"
+        @blur="modelAutoComplete = false"
         class="input-vehicle"
         type="text"
         v-model="model"
-        placeholder="Make"
+        placeholder="Model"
         autocomplete="off"
       />
       <div
         class="car-models"
-        v-if="filteredCarModel && autoComplete && model !== ``"
+        v-if="filteredCarModel && modelAutoComplete && model !== ``"
       >
         <ul>
           <li
@@ -631,7 +631,8 @@ export default {
       },
 
       filteredCarModel: [],
-      autoComplete: false,
+      makeAutoComplete: false,
+      modelAutoComplete: false,
       year: ``,
       transmission: ``,
       userMPG: ``,
@@ -656,7 +657,7 @@ export default {
     setMake(make) {
       this.make = make;
       console.log(this.make);
-      this.autoComplete = false;
+      this.makeAutoComplete = false;
     },
     getModel() {
       let selectedMake = `${this.make}`;
@@ -667,7 +668,7 @@ export default {
     },
     setModel(model) {
       this.model = model;
-      this.autoComplete = false;
+      this.modelAutoComplete = false;
     },
     getMPG() {
       let mpg = fetch(
