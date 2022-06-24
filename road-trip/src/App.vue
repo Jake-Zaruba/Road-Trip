@@ -98,7 +98,7 @@
 
     <div class="model-list">
       <input
-        @input="getModel()"
+        @input="getModel"
         @focus="modelAutoComplete = true"
         @blur="modelAutoComplete = false"
         class="input-vehicle"
@@ -661,7 +661,6 @@ export default {
     },
     getModel() {
       this.filteredCarModel = this.carModel[`${this.make}`];
-      console.log(this.filteredCarModel);
       this.filteredCarModelSearch = this.filteredCarModel.filter((model) => {
         return model.toLowerCase().startsWith(this.model.toLowerCase());
       });
@@ -1302,7 +1301,7 @@ button {
   position: relative;
 }
 
-.car-makes {
+.car-models {
   position: absolute;
   top: 4rem;
   left: 0;
