@@ -278,46 +278,32 @@ export default {
 
         Chevrolet: [
           // Chevrolet //
-          `Astro awd (cargo)`,
-          `Astro awd (passenger)`,
+          `Astro awd`,
           `Avalanche 1500 4wd`,
           `Beretta`,
           `Blazer 1500 4wd`,
           `C1500 Pickup 2wd`,
           `Camaro`,
           `Caprice`,
-          `Caprice Wagon`,
           `Cavalier`,
           `Cavalier Wagon`,
           `Colorado 2wd`,
           `Colorado 4wd`,
-          `Colorado Cab Chassis 2wd`,
-          `Colorado Cab Chassis inc 4wd`,
-          `Colorado Crew Cab 4wd`,
           `Colorado ZR2 4wd`,
           `Corsica`,
           `Corvette`,
           `Cruze`,
           `Cruze Hatchback`,
           `Cruze Premier`,
-          `Cruze Premier Hatchback`,
           `Equinox fwd`,
           `Impala`,
           `K10 Blazer 4wd`,
           `K1500 Pickup 4wd`,
           `Lumina`,
-          `Lumina/apv Minivan 2wd`,
           `Lumina Minivan 2wd`,
           `Malibu`,
           `Malibu Hybrid`,
-          `Pickup 2500 2wd`,
-          `Pickup 2500 4wd`,
-          `S10 Blazer 4wd`,
-          `S10 Pickup 2wd`,
-          `S10 Pickup 4wd`,
-          `Silverado 15 Hybrid 2wd`,
-          `Silverado 15 Hybrid 4wd`,
-          `Silverado C15 Cab Chassis 2wd`,
+          `Silverado 4wd`,
           `Silverado K15 4wd`,
           `Sonic`,
           `Sonic A5`,
@@ -330,7 +316,7 @@ export default {
           `Suburban 1500 4wd`,
           `Tahoe C1500 2wd`,
           `Tahoe 1500 4wd`,
-          `Tahoe Hybrid 4wd`,
+          `Tahoe K1500 4wd`,
           `Traverse fwd`,
           `Volt`,
         ],
@@ -659,12 +645,6 @@ export default {
       console.log(this.make);
       this.makeAutoComplete = false;
     },
-    getModel() {
-      this.filteredCarModel = this.carModel[`${this.make}`];
-      this.filteredCarModelSearch = this.filteredCarModel.filter((model) => {
-        return model.toLowerCase().startsWith(this.model.toLowerCase());
-      });
-    },
     setModel(model) {
       this.model = model;
       this.modelAutoComplete = false;
@@ -971,6 +951,12 @@ export default {
         return make.toLowerCase().startsWith(this.make.toLowerCase());
       });
     },
+    getModel() {
+      this.filteredCarModel = this.carModel[`${this.make}`];
+      this.filteredCarModelSearch = this.filteredCarModel.filter((model) => {
+        return model.toLowerCase().startsWith(this.model.toLowerCase());
+      });
+    },
   },
 };
 </script>
@@ -1035,7 +1021,7 @@ export default {
   align-self: center;
   justify-self: center;
   transform: scale(3.8);
-  margin: -5rem 0 6rem 4.5rem;
+  margin: -5rem 0 6rem 4.7rem;
   animation: carLoadIn 0.3s linear;
 }
 
@@ -1270,6 +1256,7 @@ button {
   grid-template-rows: 1fr 1fr;
   width: 25%;
   justify-content: center;
+  justify-items: center;
   align-self: center;
   padding: 0 2rem 2rem 2rem;
   gap: 2rem;
@@ -1305,6 +1292,9 @@ button {
   position: absolute;
   top: 4rem;
   left: 0;
+  height: 12rem;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .placeholder {
