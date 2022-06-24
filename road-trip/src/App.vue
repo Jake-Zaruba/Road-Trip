@@ -139,6 +139,7 @@
   </button>
   <button class="btn-new-trip" @click="newTrip()">New trip</button>
   <div class="total-cost">&nbsp; {{ totalCost }}</div>
+  <div v-if="error" class="error">{{ errorText }}</div>
   <div id="bottom-shape"></div>
 </template>
 
@@ -637,6 +638,8 @@ export default {
       gasPrice: ``,
       totalCost: `$0`,
       loading: false,
+      error: false,
+      errorText: ``,
     };
   },
   methods: {
@@ -674,7 +677,9 @@ export default {
           console.log(`Success:`, data);
         })
         .catch((error) => {
-          console.log(`Error:`, error);
+          this.errorText = `Vehicle not found`;
+          this.errorMessage();
+          this.loading = false;
         });
       return mpg;
     },
@@ -696,7 +701,9 @@ export default {
           this.userLocation = `${lat},${lng}`;
         })
         .catch((error) => {
-          console.log(`Error:`, error);
+          this.errorText = `Location not found`;
+          this.errorMessage();
+          this.loading = false;
         });
     },
     getStopLocation() {
@@ -716,7 +723,9 @@ export default {
           this.stopCoords = `${lat},${lng}`;
         })
         .catch((error) => {
-          console.log(`Error:`, error);
+          this.errorText = `Location not found`;
+          this.errorMessage();
+          this.loading = false;
         });
     },
     getDestination() {
@@ -737,7 +746,9 @@ export default {
           this.destinationCoords = `${lat},${lng}`;
         })
         .catch((error) => {
-          console.log(`Error:`, error);
+          this.errorText = `Location not found`;
+          this.errorMessage();
+          this.loading = false;
         });
     },
     addStop() {
@@ -855,7 +866,9 @@ export default {
                 this.stopCoords = `${lat},${lng}`;
               })
               .catch((error) => {
-                console.log(`Error:`, error);
+                this.errorText = `Location not found`;
+                this.errorMessage();
+                this.loading = false;
               });
 
             // fetch destination address //
@@ -921,7 +934,8 @@ export default {
           this.loading = false;
         })
         .catch((error) => {
-          console.log(`Error:`, error);
+          this.errorText = `Gas prices not available`;
+          this.errorMessage();
           this.loading = false;
         });
     },
@@ -943,6 +957,12 @@ export default {
         (this.distance = `0`),
         (this.gasPrice = ``),
         (this.totalCost = `$0`);
+    },
+    errorMessage() {
+      this.error = true;
+      setTimeout(() => {
+        this.error = false;
+      }, 3000);
     },
   },
   computed: {
@@ -1304,9 +1324,9 @@ button {
 .btn-new-trip {
   position: absolute;
   bottom: 3vh;
-  right: 10vw;
+  left: 5vw;
   height: 6vh;
-  width: 12vw;
+  width: 12rem;
   color: #333;
   background-color: #c8f9d0;
   z-index: 1;
@@ -1315,9 +1335,9 @@ button {
 .btn-total-cost {
   position: absolute;
   bottom: 3vh;
-  right: 25vw;
+  right: 5vw;
   height: 6vh;
-  width: 5rem;
+  width: 12rem;
   color: #333;
   background-color: #c8f9d0;
   z-index: 1;
@@ -1337,5 +1357,53 @@ button {
   width: 30%;
   border-radius: 3rem;
   z-index: 1;
+}
+
+.error {
+  position: absolute;
+  top: 13vh;
+  left: 35vw;
+  height: 5rem;
+  width: 30%;
+  font-size: 1.6rem;
+  text-align: center;
+  line-height: 5rem;
+  color: white;
+  background-color: rgba(255, 0, 0, 0.69);
+  border-radius: 3rem;
+  z-index: 100;
+  animation: errorMessage 0.5s forwards, errorTimeOut 0.3s forwards 2.5s;
+}
+
+@keyframes errorMessage {
+  0% {
+    opacity: 0;
+    transform: rotate(-10deg);
+  }
+  25% {
+    opacity: 1;
+    transform: rotate(8deg);
+  }
+  50% {
+    opacity: 1;
+    transform: rotate(-5deg);
+  }
+  75% {
+    opacity: 1;
+    transform: rotate(3deg);
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes errorTimeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 </style>
