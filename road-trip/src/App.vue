@@ -157,7 +157,7 @@
     Go!
   </button>
   <button class="btn-new-trip" @click="newTrip()">New trip</button>
-  <div class="total-cost">&nbsp; {{ totalCost }}</div>
+  <div class="total-cost">{{ totalCost }}</div>
   <div v-if="error" class="error">{{ errorText }}</div>
   <div id="bottom-shape"></div>
 </template>
