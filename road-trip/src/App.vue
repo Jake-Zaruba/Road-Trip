@@ -926,11 +926,6 @@ export default {
           // trim decimals //
           let finalCost = (this.distance / this.userMPG) * this.gasPrice;
           this.totalCost = `$` + finalCost.toFixed(2);
-          // if (this.selectTrip === `one way`) {
-          //   this.totalCost = `$` + finalCost.toFixed(2);
-          // } else if (this.selectTrip === `round trip`) {
-          //   this.totalCost = `$` + finalCost.toFixed(2) * 2;
-          // }
           this.loading = false;
         })
         .catch((error) => {
