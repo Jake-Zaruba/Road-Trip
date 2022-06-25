@@ -55,29 +55,17 @@
   </section>
 
   <section class="section-vehicle move">
-    <select class="input-vehicle" v-model="year">
-      <option value="">Year</option>
-      <option value="2021">2021</option>
-      <option value="2020">2020</option>
-      <option value="2019">2019</option>
-      <option value="2018">2018</option>
-      <option value="2017">2017</option>
-      <option value="2016">2016</option>
-      <option value="2015">2015</option>
-      <option value="2014">2014</option>
-      <option value="2013">2013</option>
-      <option value="2012">2012</option>
-      <option value="2011">2011</option>
-      <option value="2010">2010</option>
-      <option value="2009">2009</option>
-      <option value="2008">2008</option>
-      <option value="2007">2007</option>
-    </select>
     <div class="make-list">
       <input
-        @input="getMake"
+        @input="
+          getMake;
+          focusMake();
+        "
         @focus="makeAutoComplete = true"
-        @blur="makeAutoComplete = false"
+        @blur="
+          makeAutoComplete = false;
+          blurMake();
+        "
         class="input-vehicle"
         type="text"
         v-model="make"
@@ -98,9 +86,15 @@
 
     <div class="model-list">
       <input
-        @input="getModel"
+        @input="
+          getModel;
+          focusModel();
+        "
         @focus="modelAutoComplete = true"
-        @blur="modelAutoComplete = false"
+        @blur="
+          modelAutoComplete = false;
+          blurModel();
+        "
         class="input-vehicle"
         type="text"
         v-model="model"
@@ -121,7 +115,25 @@
         </ul>
       </div>
     </div>
-    <select class="input-vehicle" v-model="transmission">
+    <select class="input-vehicle input-year" v-model="year">
+      <option value="">Year</option>
+      <option value="2021">2021</option>
+      <option value="2020">2020</option>
+      <option value="2019">2019</option>
+      <option value="2018">2018</option>
+      <option value="2017">2017</option>
+      <option value="2016">2016</option>
+      <option value="2015">2015</option>
+      <option value="2014">2014</option>
+      <option value="2013">2013</option>
+      <option value="2012">2012</option>
+      <option value="2011">2011</option>
+      <option value="2010">2010</option>
+      <option value="2009">2009</option>
+      <option value="2008">2008</option>
+      <option value="2007">2007</option>
+    </select>
+    <select class="input-vehicle input-transmission" v-model="transmission">
       <option class="placeholder" value="">Transmission</option>
       <option value="a">Automatic</option>
       <option value="m">Manual</option>
@@ -652,6 +664,30 @@ export default {
       this.model = model;
       this.modelAutoComplete = false;
     },
+    focusMake() {
+      const yearEl = document.querySelector(`.input-year`);
+      if (this.make !== ``) {
+        yearEl.style.opacity = `0.2`;
+      } else if (this.make === ``) {
+        yearEl.style.opacity = `1`;
+      }
+    },
+    blurMake() {
+      const yearEl = document.querySelector(`.input-year`);
+      yearEl.style.opacity = `1`;
+    },
+    focusModel() {
+      const transmissionEl = document.querySelector(`.input-transmission`);
+      if (this.model !== ``) {
+        transmissionEl.style.opacity = `0.2`;
+      } else if (this.model === ``) {
+        transmissionEl.style.opacity = `1`;
+      }
+    },
+    blurModel() {
+      const transmissionEl = document.querySelector(`.input-transmission`);
+      transmissionEl.style.opacity = `1`;
+    },
     getMPG() {
       let mpg = fetch(
         `https://api.api-ninjas.com/v1/cars?limit=30&year=` +
@@ -678,6 +714,7 @@ export default {
         })
         .catch((error) => {
           this.errorText = `Vehicle not found`;
+          this.totalCost = `$0`;
           this.errorMessage();
           this.loading = false;
         });
@@ -926,10 +963,17 @@ export default {
           // trim decimals //
           let finalCost = (this.distance / this.userMPG) * this.gasPrice;
           this.totalCost = `$` + finalCost.toFixed(2);
+          if (this.totalCost === `$` + NaN) {
+            this.totalCost = `$0`;
+            this.loading = false;
+          } else {
+            this.totalCost;
+          }
           this.loading = false;
         })
         .catch((error) => {
           this.errorText = `Gas prices not available`;
+          this.totalCost = `$0`;
           this.errorMessage();
           this.loading = false;
         });
@@ -996,22 +1040,6 @@ export default {
   border-bottom-left-radius: 6rem;
   border-top-right-radius: 6rem;
 }
-
-/* .current-selection {
-  animation: currentSelection 1.5s linear infinite;
-}
-
-@keyframes currentSelection {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-  0% {
-    transform: scale(1);
-  }
-} */
 
 .select-trip {
   position: absolute;
@@ -1297,6 +1325,7 @@ button {
   position: absolute;
   top: 4rem;
   left: 0;
+  z-index: 10;
 }
 
 .model-list {
@@ -1310,6 +1339,7 @@ button {
   height: 12rem;
   overflow-x: hidden;
   overflow-y: auto;
+  z-index: 10;
 }
 
 .placeholder {

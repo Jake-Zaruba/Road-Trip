@@ -26,7 +26,7 @@ body {
 
 @media (max-width: 44em) {
   html {
-    font-size: 50%;
+    font-size: 56.25%;
   }
 
   #app .btn-total-cost {
