@@ -29,6 +29,10 @@ body {
     font-size: 56.25%;
   }
 
+  #app .icon-car {
+    margin: -5rem 0 5rem 4.4rem;
+  }
+
   #app .btn-total-cost {
     height: 5vh;
     bottom: 3.5vh;

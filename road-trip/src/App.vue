@@ -13,7 +13,11 @@
     class="icon-car"
     alt="Icon of a cartoon car."
   />
-  <select class="select-trip current-selection" v-model="selectTrip">
+  <select
+    class="select-trip current-selection"
+    v-model="selectTrip"
+    @blur="calculateDistance()"
+  >
     <option value="" selected>&nbsp; Trip type</option>
     <option value="one way">One-Way</option>
     <option value="round trip">Round trip</option>
@@ -26,6 +30,7 @@
       name="userAdress"
       v-model="userAddress"
       placeholder="Enter address"
+      spellcheck="false"
     />
 
     <li class="stop-container" key="stop">
@@ -36,6 +41,7 @@
         name="stopAdress"
         v-model="stopAddress"
         placeholder="Enter address"
+        spellcheck="false"
       />
     </li>
 
@@ -47,6 +53,7 @@
       name="destination"
       v-model="destination"
       placeholder="Enter destination"
+      spellcheck="false"
     />
     <button class="btn-stop move" @click="addStop()">Add stop</button>
   </section>
@@ -723,7 +730,7 @@ export default {
     getUserLocation() {
       const address = this.userAddress.replaceAll(` `, `+`);
       fetch(
-        `http://www.mapquestapi.com/geocoding/v1/address?key=VWtLJjUxEFuyRfoQSeoWjGBFJHVhossb
+        `https://www.mapquestapi.com/geocoding/v1/address?key=VWtLJjUxEFuyRfoQSeoWjGBFJHVhossb
         &location=${address}`,
         {
           method: "GET",
@@ -746,7 +753,7 @@ export default {
     getStopLocation() {
       const stopAddress = this.stopAddress.replaceAll(` `, `+`);
       fetch(
-        `http://www.mapquestapi.com/geocoding/v1/address?key=VWtLJjUxEFuyRfoQSeoWjGBFJHVhossb
+        `https://www.mapquestapi.com/geocoding/v1/address?key=VWtLJjUxEFuyRfoQSeoWjGBFJHVhossb
           &location=${stopAddress}`,
         {
           method: "GET",
@@ -768,7 +775,7 @@ export default {
     getDestination() {
       const destination = this.destination.replaceAll(` `, `+`);
       fetch(
-        `http://www.mapquestapi.com/geocoding/v1/address?key=VWtLJjUxEFuyRfoQSeoWjGBFJHVhossb
+        `https://www.mapquestapi.com/geocoding/v1/address?key=VWtLJjUxEFuyRfoQSeoWjGBFJHVhossb
         &location=${destination}`,
         {
           method: "GET",
@@ -820,7 +827,7 @@ export default {
       if (!this.stopAdded) {
         const address = this.userAddress.replaceAll(` `, `+`);
         fetch(
-          `http://www.mapquestapi.com/geocoding/v1/address?key=VWtLJjUxEFuyRfoQSeoWjGBFJHVhossb
+          `https://www.mapquestapi.com/geocoding/v1/address?key=VWtLJjUxEFuyRfoQSeoWjGBFJHVhossb
         &location=${address}`,
           {
             method: "GET",
@@ -838,7 +845,7 @@ export default {
 
             const destination = this.destination.replaceAll(` `, `+`);
             fetch(
-              `http://www.mapquestapi.com/geocoding/v1/address?key=VWtLJjUxEFuyRfoQSeoWjGBFJHVhossb
+              `https://www.mapquestapi.com/geocoding/v1/address?key=VWtLJjUxEFuyRfoQSeoWjGBFJHVhossb
             &location=${destination}`,
               {
                 method: "GET",
@@ -855,7 +862,7 @@ export default {
                 // calculate distance between user's location and destination //
 
                 fetch(
-                  `http://www.mapquestapi.com/directions/v2/route?key=VWtLJjUxEFuyRfoQSeoWjGBFJHVhossb&from=${this.userLocation}&to=${this.destinationCoords}`,
+                  `https://www.mapquestapi.com/directions/v2/route?key=VWtLJjUxEFuyRfoQSeoWjGBFJHVhossb&from=${this.userLocation}&to=${this.destinationCoords}`,
                   {
                     method: "GET",
                     contentType: "application/json",
@@ -863,7 +870,14 @@ export default {
                 )
                   .then((response) => response.json())
                   .then((data) => {
-                    this.distance = data.route.distance.toFixed(1);
+                    if (this.selectTrip === `one way`) {
+                      this.distance = data.route.distance.toFixed(1);
+                    } else if (this.selectTrip === `round trip`) {
+                      this.distance = data.route.distance.toFixed(1) * 2;
+                    } else {
+                      this.errorText = `Select trip type`;
+                      this.errorMessage();
+                    }
                     console.log(this.distance);
                   });
               });
@@ -871,7 +885,7 @@ export default {
       } else if (this.stopAdded) {
         const address = this.userAddress.replaceAll(` `, `+`);
         fetch(
-          `http://www.mapquestapi.com/geocoding/v1/address?key=VWtLJjUxEFuyRfoQSeoWjGBFJHVhossb
+          `https://www.mapquestapi.com/geocoding/v1/address?key=VWtLJjUxEFuyRfoQSeoWjGBFJHVhossb
           &location=${address}`,
           {
             method: "GET",
@@ -889,7 +903,7 @@ export default {
 
             const stop = this.stopAddress.replaceAll(` `, `+`);
             fetch(
-              `http://www.mapquestapi.com/geocoding/v1/address?key=VWtLJjUxEFuyRfoQSeoWjGBFJHVhossb
+              `https://www.mapquestapi.com/geocoding/v1/address?key=VWtLJjUxEFuyRfoQSeoWjGBFJHVhossb
                 &location=${stop}`,
               {
                 method: "GET",
@@ -912,7 +926,7 @@ export default {
 
             const destination = this.destination.replaceAll(` `, `+`);
             fetch(
-              `http://www.mapquestapi.com/geocoding/v1/address?key=VWtLJjUxEFuyRfoQSeoWjGBFJHVhossb
+              `https://www.mapquestapi.com/geocoding/v1/address?key=VWtLJjUxEFuyRfoQSeoWjGBFJHVhossb
           &location=${destination}`,
               {
                 method: "GET",
@@ -929,7 +943,7 @@ export default {
                 // calculate distance between user's location and destination //
 
                 fetch(
-                  `http://www.mapquestapi.com/directions/v2/route?key=VWtLJjUxEFuyRfoQSeoWjGBFJHVhossb&ambiguous=check&from=${this.userLocation}&to=${this.stopCoords}&to=${this.destinationCoords}&to${this.userLocation}`,
+                  `https://www.mapquestapi.com/directions/v2/route?key=VWtLJjUxEFuyRfoQSeoWjGBFJHVhossb&ambiguous=check&from=${this.userLocation}&to=${this.stopCoords}&to=${this.destinationCoords}&to${this.userLocation}`,
                   {
                     method: "GET",
                     contentType: "application/json",
@@ -937,7 +951,14 @@ export default {
                 )
                   .then((response) => response.json())
                   .then((data) => {
-                    this.distance = data.route.distance.toFixed(1);
+                    if (this.selectTrip === `one way`) {
+                      this.distance = data.route.distance.toFixed(1);
+                    } else if (this.selectTrip === `round trip`) {
+                      this.distance = data.route.distance.toFixed(1) * 2;
+                    } else {
+                      this.errorText = `Select trip type`;
+                      this.errorMessage();
+                    }
                     console.log(this.distance);
                   });
               });
@@ -1001,7 +1022,7 @@ export default {
       this.error = true;
       setTimeout(() => {
         this.error = false;
-      }, 3000);
+      }, 3500);
     },
   },
   computed: {
@@ -1046,7 +1067,6 @@ export default {
   top: 3vh;
   left: 30vw;
   font-size: 1.6rem;
-  text-align: center;
   line-height: 6vh;
   color: #333;
   border: none;
@@ -1059,12 +1079,12 @@ export default {
 }
 
 .icon-car {
-  height: 5rem;
-  width: 8rem;
+  height: 4.5rem;
+  width: 7.2rem;
   align-self: center;
   justify-self: center;
   transform: scale(3.8);
-  margin: -5rem 0 6rem 4.7rem;
+  margin: -5rem 0 6rem 4.4rem;
   animation: carLoadIn 0.3s linear;
 }
 
@@ -1119,6 +1139,8 @@ input {
 
 select {
   box-shadow: 0 0.3rem 0.6rem 0rem rgba(51, 51, 51, 0.365);
+  text-align: center;
+  background-color: white;
 }
 
 ul {
