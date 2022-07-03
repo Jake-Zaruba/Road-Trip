@@ -1042,6 +1042,8 @@ export default {
 </script>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;500;600;700;800&display=swap");
+
 #top-shape {
   position: absolute;
   top: 0;
@@ -1066,7 +1068,7 @@ export default {
   position: absolute;
   top: 3vh;
   left: 30vw;
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   line-height: 6vh;
   color: #333;
   border: none;
@@ -1134,10 +1136,12 @@ label {
 }
 
 input {
+  font-family: "Nunito", sans-serif;
   box-shadow: 0 0.3rem 0.6rem 00rem rgba(51, 51, 51, 0.365);
 }
 
 select {
+  font-family: "Nunito", sans-serif;
   box-shadow: 0 0.3rem 0.6rem 0rem rgba(51, 51, 51, 0.365);
   text-align: center;
   background-color: white;
@@ -1149,7 +1153,7 @@ ul {
 
 li {
   text-align: center;
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   line-height: 3rem;
   /* font-weight: 700; */
   width: 16rem;
@@ -1165,7 +1169,7 @@ li:nth-child(n + 2) {
 }
 
 button {
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   text-align: center;
   height: 4rem;
   width: 12rem;
@@ -1185,7 +1189,7 @@ button {
 }
 
 .input-location {
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   text-align: center;
   height: 4rem;
   width: 24rem;
@@ -1204,6 +1208,7 @@ button {
 }
 
 .btn-stop {
+  font-family: "Nunito", sans-serif;
   display: block;
   margin: 2rem auto 0 auto;
 }
@@ -1213,7 +1218,7 @@ button {
   list-style: none;
   text-align: left;
   margin-bottom: 4.8rem;
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   line-height: normal;
   font-weight: 700;
   color: #333;
@@ -1304,7 +1309,7 @@ button {
 }
 
 .distance {
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   text-align: center;
   line-height: 6vh;
   color: #333;
@@ -1328,7 +1333,7 @@ button {
 }
 
 .input-vehicle {
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   text-align: center;
   height: 4rem;
   width: 16rem;
@@ -1374,6 +1379,8 @@ button {
   left: 5vw;
   height: 6vh;
   width: 12rem;
+  font-family: "Nunito", sans-serif;
+  font-weight: 800;
   color: #333;
   background-color: #c8f9d0;
   z-index: 1;
@@ -1385,6 +1392,8 @@ button {
   right: 5vw;
   height: 6vh;
   width: 12rem;
+  font-family: "Nunito", sans-serif;
+  font-weight: 800;
   color: #333;
   background-color: #c8f9d0;
   z-index: 1;
@@ -1394,7 +1403,8 @@ button {
   position: absolute;
   bottom: 3vh;
   left: 35vw;
-  font-size: 1.6rem;
+  font-family: "Nunito", sans-serif;
+  font-size: 1.8rem;
   text-align: center;
   line-height: 6vh;
   color: #333;
@@ -1412,7 +1422,7 @@ button {
   left: 35vw;
   height: 5rem;
   width: 30%;
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   text-align: center;
   line-height: 5rem;
   color: white;
