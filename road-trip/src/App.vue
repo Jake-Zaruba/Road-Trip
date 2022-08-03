@@ -1153,7 +1153,7 @@ ul {
 
 li {
   text-align: center;
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   line-height: 3rem;
   /* font-weight: 700; */
   width: 16rem;
@@ -1189,7 +1189,7 @@ button {
 }
 
 .input-location {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   text-align: center;
   height: 4rem;
   width: 24rem;
@@ -1309,7 +1309,7 @@ button {
 }
 
 .distance {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   text-align: center;
   line-height: 6vh;
   color: #333;
@@ -1333,7 +1333,7 @@ button {
 }
 
 .input-vehicle {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   text-align: center;
   height: 4rem;
   width: 16rem;
